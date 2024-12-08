@@ -1,0 +1,50 @@
+/* static/css/style.css */
+/* ... (previous CSS styles remain the same) ... */
+
+.sensor-box {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sensor-value {
+    font-size: 2.5em;  /* Increased size */
+    font-weight: bold;
+    color: #0066cc;
+    margin-right: 5px;
+    font-family: 'Courier New', monospace;  /* Monospace for better number alignment */
+    min-width: 150px;  /* Ensure enough space for large numbers */
+    text-align: right;
+    display: inline-block;
+}
+
+.unit {
+    font-size: 1.2em;
+    color: #666;
+    display: inline-block;
+    width: 40px;  /* Fixed width for unit */
+    text-align: left;
+}
+
+.reading-container {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+/* Add some responsive adjustments */
+@media (max-width: 768px) {
+    .sensor-value {
+        font-size: 2em;
+        min-width: 120px;
+    }
+    
+    .unit {
+        font-size: 1em;
+    }
+}

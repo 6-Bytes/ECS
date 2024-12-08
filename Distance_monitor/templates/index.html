@@ -1,0 +1,46 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance Monitor</title>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Distance Monitor</h1>
+        
+        <div class="sensor-reading">
+            <h2>Current Readings</h2>
+            <div class="sensor-grid">
+                <div class="sensor-box">
+                    <p>Sensor 1</p>
+                    <span id="sensor1" class="sensor-value">--</span>
+                    <span class="unit">cm</span>
+                </div>
+                <div class="sensor-box">
+                    <p>Sensor 2</p>
+                    <span id="sensor2" class="sensor-value">--</span>
+                    <span class="unit">cm</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="distanceChart"></canvas>
+        </div>
+
+        <div class="status-panel">
+            <p>Status: <span id="connectionStatus">Connected</span></p>
+            <p>Last Update: <span id="lastUpdate">--</span></p>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/chart_handler.js') }}"></script>
+</body>
+</html>
