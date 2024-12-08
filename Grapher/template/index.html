@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distance Monitor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .sensor-reading { 
+            padding: 20px;
+            margin: 10px 0;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        canvas { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Distance Monitor</h1>
+        <div class="sensor-reading">
+            <h2>Current Readings</h2>
+            <p>Sensor 1: <span id="sensor1">--</span> cm</p>
+            <p>Sensor 2: <span id="sensor2">--</span> cm</p>
+        </div>
+        <canvas id="distanceChart"></canvas>
+    </div>
+
+    <script>
+        // Initialize the chart
+        const ctx = document.getElementById('distanceChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Sensor 1',
+                    data: [],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }, {
+                    label: 'Sensor 2',
+                    data: [],
+                    borderColor: 'rgb(255, 99, 132)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 1,       // Set minimum value for y-axis
+                        max: 2000,    // Set maximum value for y-axis
+                        title: {
+                            display: true,
+                            text: 'Distance (cm)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update data every 100ms
+        const maxDataPoints = 50;
+        setInterval(() => {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    // Update current readings
+                    document.getElementById('sensor1').textContent = data.sensor1.toFixed(1);
+                    document.getElementById('sensor2').textContent = data.sensor2.toFixed(1);
+
+                    // Update chart
+                    const timestamp = new Date().toLocaleTimeString();
+                    chart.data.labels.push(timestamp);
+                    chart.data.datasets[0].data.push(data.sensor1);
+                    chart.data.datasets[1].data.push(data.sensor2);
+
+                    // Remove old data points if we have too many
+                    if (chart.data.labels.length > maxDataPoints) {
+                        chart.data.labels.shift();
+                        chart.data.datasets[0].data.shift();
+                        chart.data.datasets[1].data.shift();
+                    }
+
+                    chart.update();
+                });
+        }, 100);
+    </script>
+</body>
+</html>
